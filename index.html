@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simülatif Bilet ve Yolculuk Sistemi</title>
+    <title>Simülatif Bilet and Yolculuk Sistemi</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -40,6 +40,7 @@
         <div class="timer-display" id="sim-timer">Kalan Süre: 00:00:00</div>
         
         <div id="break-alert" class="break-alert-overlay">MOLA VERDİNİZ</div>
+        <div id="end-alert" class="end-alert-overlay">🎉 YOLCULUK TAMAMLANDI</div>
 
         <video id="sim-video" loop muted playsinline preload="auto" crossorigin="anonymous">
             <source src="" type="video/mp4">
@@ -47,6 +48,7 @@
         
         <div class="sim-controls">
             <button id="control-action-btn" class="break-btn" onclick="handleControlClick()">Mola Ver</button>
+            <button id="end-journey-btn-direct" class="end-direct-btn" onclick="triggerDirectEnd()">Yolculuğu Bitir</button>
         </div>
     </div>
 
