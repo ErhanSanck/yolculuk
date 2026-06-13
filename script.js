@@ -1,7 +1,7 @@
 const videoURLS = {
-    ucak: "https://archive.org/download/ship_20260613/plane.mp4",
-    otobus: "https://archive.org/download/ship_20260613/bus.mp4",
-    gemi: "https://archive.org/download/ship_20260613/ship.mp4"
+    ucak: "https://yzf5f5l1r2ucb6g4.public.blob.vercel-storage.com/plane.mp4",
+    otobus: "https://yzf5f5l1r2ucb6g4.public.blob.vercel-storage.com/otob%C3%BCs.mp4",
+    gemi: "https://yzf5f5l1r2ucb6g4.public.blob.vercel-storage.com/gemi.mp4"
 };
 
 const rotalar = {
