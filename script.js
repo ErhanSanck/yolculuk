@@ -1,7 +1,7 @@
 // --- BUBBLE / BULUT SUNUCU LİNKLERİ ---
 // Vercel Blob linklerini aldığında buradaki tırnak içindeki alanlara yapıştırabilirsin.
 const videoURLS = {
-    ucak: "https://archive.org/download/ship_20260613/plane.mp4",
+    ucak: "https://yzf5f5l1r2ucb6g4.public.blob.vercel-storage.com/plane.mp4",
     otobus: "https://archive.org/download/ship_20260613/bus.mp4",
     gemi: "https://yzf5f5l1r2ucb6g4.public.blob.vercel-storage.com/gemi.mp4"
 };
