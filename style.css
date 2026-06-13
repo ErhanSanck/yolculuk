@@ -23,6 +23,7 @@ body {
     min-height: 100vh;
 }
 
+/* Ana Taşıyıcı Masaüstü */
 .container {
     width: 100%;
     max-width: 1100px;
@@ -30,17 +31,18 @@ body {
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     display: flex;
+    flex-direction: row; /* Masaüstünde yan yana */
     overflow: hidden;
     min-height: 600px;
 }
 
-/* Masaüstü Sol Menü */
+/* Sol Menü Masaüstü */
 .sidebar {
     width: 25%;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     padding: 30px 15px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Masaüstünde alt alta */
     gap: 15px;
 }
 
@@ -63,7 +65,7 @@ body {
     transform: translateX(5px);
 }
 
-/* Sağ İçerik */
+/* Sağ İçerik Masaüstü */
 .main-content {
     width: 75%;
     padding: 30px;
@@ -240,45 +242,54 @@ body {
 }
 
 /* ======================================================= */
-/* 📱 TELEFON DİKEY MODU (PORTRAIT)                         */
+/* 📱 MOBİL CİHAZLAR (DİKEY MOD) - GÜNCELLENDİ             */
 /* ======================================================= */
-@media (max-width: 768px) and (orientation: portrait) {
-    body { padding: 10px; }
+@media screen and (max-width: 768px) {
+    body {
+        padding: 10px;
+        align-items: flex-start; /* Üstten başlasın taşma yapmasın */
+    }
     
     .container {
-        flex-direction: column; /* Menü yukarı, form aşağıya düşer */
+        flex-direction: column !important; /* Menü üste, form alta zorla */
         min-height: auto;
     }
 
     .sidebar {
-        width: 100%;
-        flex-direction: row; /* Butonlar yatay dizilir */
-        padding: 10px;
+        width: 100% !important; /* Masaüstü %25'ini ez */
+        flex-direction: row !important; /* Butonları yan yana diz */
+        padding: 12px;
         gap: 8px;
     }
 
     .tab-btn {
-        flex: 1;
+        flex: 1; /* Butonlar ekran genişliğini eşit paylaşır */
         padding: 12px 5px;
-        font-size: 13px;
+        font-size: 14px;
         text-align: center;
+        border-radius: 6px;
     }
     
     .tab-btn:hover, .tab-btn.active {
-        transform: translateY(-2px); /* Dikeyde yana değil yukarı kaysın */
+        transform: translateY(-2px); /* Dikey modda yukarı zıplasın */
     }
 
     .main-content {
-        width: 100%;
+        width: 100% !important; /* Masaüstü %75'ini ez */
         padding: 15px;
         gap: 15px;
     }
 
-    .range-container { padding: 15px; }
+    .content-header h2 {
+        font-size: 18px;
+    }
 
-    /* Uygun Seferler yan yana ve sığacak şekilde grid ayarı */
+    .range-container { 
+        padding: 12px; 
+    }
+
     .tickets-grid {
-        grid-template-columns: 1fr 1fr; 
+        grid-template-columns: 1fr 1fr; /* Sıkıca yan yana iki bilet */
         gap: 10px;
     }
 
@@ -286,106 +297,101 @@ body {
         padding: 10px;
     }
 
-    .ticket-card h4 { font-size: 14px; }
+    .ticket-card h4 { font-size: 13px; }
     .ticket-card p { font-size: 11px !important; }
-    .ticket-card p[style*="font-size:18px"] { 
-        font-size: 14px !important; 
+    
+    /* Sağ alttaki fiyat etiketini mobil kart içinde alta hizala */
+    .ticket-price { 
+        font-size: 13px !important; 
         position: relative !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        margin-top: 5px;
+        right: auto !important;
+        bottom: auto !important;
+        display: block;
+        margin-top: 8px;
     }
 
-    /* TELEFONDAN GİRİLİNCE BUTONLAR YARI BOYUTA DÜŞSÜN */
+    /* SİMÜLASYON BUTONLARI MOBİL KÜÇÜLTMESİ */
     .sim-controls {
-        bottom: 15px;
-        right: 15px;
-        gap: 8px;
+        bottom: 20px;
+        right: 20px;
+        gap: 10px;
     }
 
     .break-btn, .end-direct-btn {
-        padding: 10px 18px; /* Yarı boyuta düşürüldü */
-        font-size: 13px;    /* Yazı küçültüldü */
+        padding: 10px 16px; /* Yarı boyuta düşürüldü */
+        font-size: 14px;    /* Yazı fontu optimize edildi */
     }
 
     .timer-display {
-        top: 15px;
-        left: 15px;
-        font-size: 16px;
-        padding: 6px 15px;
+        top: 20px;
+        left: 20px;
+        font-size: 15px;
+        padding: 6px 12px;
     }
 
     .break-alert-overlay, .end-alert-overlay {
-        font-size: 20px;
-        padding: 20px 30px;
-        width: 80%;
+        font-size: 22px;
+        padding: 20px;
+        width: 85%;
     }
 }
 
 /* ======================================================= */
-/* 📱 TELEFON YATAY MODU (LANDSCAPE)                        */
+/* 📱 MOBİL CİHAZLAR (YATAY ÇEVRİLİNCE) - GÜNCELLENDİ      */
 /* ======================================================= */
-@media (max-height: 500px) and (orientation: landscape) {
+@media screen and (max-width: 900px) and (orientation: landscape) {
     body { padding: 5px; }
 
     .container {
-        flex-direction: row; /* Menü solda, form sağda kalır */
-        min-height: auto;
+        flex-direction: row !important; /* Menü solda, form sağda kalır */
         height: 95vh;
+        min-height: auto;
     }
 
     .sidebar {
-        width: 20%;
-        flex-direction: column; /* Butonlar dikey kalır */
+        width: 25% !important; 
+        flex-direction: column !important; /* Butonları dikey yap */
         padding: 10px;
-        gap: 5px;
-        justify-content: center;
+        gap: 8px;
+        justify-content: flex-start;
     }
 
     .tab-btn {
-        padding: 8px 10px;
+        width: 100%;
+        padding: 10px;
         font-size: 12px;
+        text-align: left;
     }
 
     .main-content {
-        width: 80%;
+        width: 75% !important;
         padding: 15px;
         gap: 10px;
-        overflow-y: auto; /* Küçük ekranlarda taşarsa kaydırılabilir olsun */
+        overflow-y: auto; /* Küçük ekranlarda kaydırma çubuğu */
     }
 
     .content-header h2 { font-size: 16px; }
-    .range-container { padding: 8px 15px; }
-    .range-slider { margin-top: 2px; }
+    .range-container { padding: 8px 12px; }
     
     .tickets-grid {
         grid-template-columns: 1fr 1fr;
         gap: 8px;
-        margin-top: 5px;
     }
 
     .ticket-card { padding: 8px; }
-    .ticket-card h4 { font-size: 13px; }
+    .ticket-card h4 { font-size: 12px; }
     
     .footer-actions { padding-top: 5px; }
-    .start-btn { padding: 6px 20px; font-size: 13px; }
+    .start-btn { padding: 8px 20px; font-size: 13px; }
 
-    /* YATAY MODDA DA BUTONLAR YARI BOYUTTA KALSIN */
+    /* Butonlar Yatayda da Yarı Boyutta */
     .sim-controls {
         bottom: 15px;
         right: 15px;
-        gap: 8px;
     }
 
     .break-btn, .end-direct-btn {
-        padding: 10px 18px;
+        padding: 8px 15px;
         font-size: 13px;
-    }
-
-    .timer-display {
-        top: 15px;
-        left: 15px;
-        font-size: 16px;
-        padding: 6px 15px;
     }
 }
