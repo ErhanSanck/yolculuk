@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simülatif Bilet ve Yolculuk Sistemi</title>
+    <style>
+        :root {
+            --primary-color: #2b5876;
+            --secondary-color: #4e4376;
+            --accent-color: #ff6b6b;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: #333;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        /* Sol Menü */
+        .sidebar {
+            width: 25%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 30px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: left;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: white;
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        /* Sağ İçerik */
+        .main-content {
+            width: 75%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            position: relative;
+        }
+
+        .content-header {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .range-container {
+            background: #f0f2f5;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .range-slider {
+            width: 100%;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .tickets-section {
+            flex-grow: 1;
+        }
+
+        .tickets-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .ticket-card {
+            border: 2px solid #eef2f5;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            background: #fff;
+        }
+
+        .ticket-card:hover {
+            border-color: var(--primary-color);
+            background: #fdfdfd;
+        }
+
+        .ticket-card.selected {
+            border-color: #2ecc71;
+            background: #f4fbf7;
+        }
+
+        .ticket-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .footer-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 15px;
+            border-top: 2px solid #eee;
+        }
+
+        .start-btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .start-btn:hover {
+            background: #27ae60;
+        }
+
+        .start-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* TAM EKRAN SİMÜLASYON ALANI */
+        #simulation-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000000;
+            z-index: 9999999;
+        }
+
+        #sim-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: black;
+        }
+
+        .sim-controls {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            z-index: 10000000;
+        }
+
+        .break-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 20px;
+            border-radius: 35px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            transition: transform 0.2s;
+        }
+
+        .break-btn:active {
+            transform: scale(0.95);
+        }
+
+        .timer-display {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            color: white;
+            font-size: 28px;
+            background: rgba(0,0,0,0.7);
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            z-index: 10000000;
+            letter-spacing: 1px;
+        }
+
+        /* Ortada Çıkacak Mola Uyarısı */
+        .break-alert-overlay {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 30px 60px;
+            border-radius: 15px;
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 1px;
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.4);
+            z-index: 10000001;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="sidebar">
+            <button class="tab-btn active" onclick="changeVehicle('ucak', event)">✈️ Uçak Yolculuğu</button>
+            <button class="tab-btn" onclick="changeVehicle('otobus', event)">🚌 Otobüs Yolculuğu</button>
+            <button class="tab-btn" onclick="changeVehicle('gemi', event)">🚢 Deniz Yolculuğu</button>
+        </div>
+
+        <div class="main-content">
+            <div class="content-header">
+                <h2 id="form-title">Uçak Bileti Rezervasyonu</h2>
+            </div>
+
+            <div class="range-container">
+                <label for="duration-slider"><b>İstediğiniz Yolculuk Süresi:</b> <span id="duration-val">3</span> Saat</label>
+                <input type="range" id="duration-slider" class="range-slider" min="1" max="12" value="3" oninput="updateDuration(this.value)">
+            </div>
+
+            <div class="tickets-section">
+                <h3>Uygun Seferler</h3>
+                <div class="tickets-grid" id="tickets-container"></div>
+            </div>
+
+            <div class="footer-actions">
+                <button id="start-journey-btn" class="start-btn" disabled onclick="startJourney()">Yolculuğu Başlat</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="simulation-overlay">
+        <div class="timer-display" id="sim-timer">Kalan Süre: 00:00:00</div>
+        
+        <div id="break-alert" class="break-alert-overlay">MOLA VERDİNİZ</div>
+
+        <video id="sim-video" loop muted playsinline preload="auto" crossorigin="anonymous">
+            <source src="" type="video/mp4">
+        </video>
+        
+        <div class="sim-controls">
+            <button id="control-action-btn" class="break-btn" onclick="handleControlClick()">Mola Ver</button>
+        </div>
+    </div>
+
+    <script>
+        const rotalar = {
+            kara: ["İstanbul - Ankara", "Ankara - İzmir", "Bursa - Antalya", "İstanbul - Sofya", "İzmir - Çanakkale", "Eskişehir - Bolu"],
+            deniz: ["İstanbul - Atina", "İzmir - Selanik", "Marmaris - Rodos", "İstanbul - Odessa", "Venedik - Dubrovnik", "Mersin - Girne"],
+            hava: ["Paris - Roma", "İstanbul - Londra", "Tokyo - Seul", "New York - Boston", "Berlin - Amsterdam", "Kahire - Dubai"]
+        };
+
+        // GitHub üzerinde sorunsuz çalışacak ana konuma göre göreli yollar
+        const videoURLS = {
+            ucak: "videos/plane.mp4",
+            otobus: "videos/bus.mp4",
+            gemi: "videos/ship.mp4"
+        };
+
+        let seciliArac = 'ucak';
+        let seciliSure = 3; 
+        let seciliBilet = null;
+        let kalanSaniye = 0;
+        let zamanlayici = null;
+        let molaModu = false;
+        let yolculukAktif = false;
+
+        window.onload = () => {
+            generateTickets();
+            setupFullscreenInterceptors();
+        };
+
+        function changeVehicle(type, e) {
+            seciliArac = type;
+            seciliBilet = null;
+            document.getElementById('start-journey-btn').disabled = true;
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+
+            const basliklar = { ucak: "Uçak Bileti Rezervasyonu", otobus: "Otobüs Bileti Rezervasyonu", gemi: "Deniz Yolculuğu Rezervasyonu" };
+            document.getElementById('form-title').innerText = basliklar[type];
+
+            generateTickets();
+        }
+
+        function updateDuration(val) {
+            seciliSure = parseInt(val);
+            document.getElementById('duration-val').innerText = val;
+            seciliBilet = null;
+            document.getElementById('start-journey-btn').disabled = true;
+            generateTickets();
+        }
+
+        function generateTickets() {
+            const container = document.getElementById('tickets-container');
+            container.innerHTML = "";
+
+            let havuz = seciliArac === 'ucak' ? rotalar.hava : (seciliArac === 'otobus' ? rotalar.kara : rotalar.deniz);
+            let karisikHavuz = [...havuz].sort(() => 0.5 - Math.random());
+
+            for(let i = 0; i < Math.min(2, karisikHavuz.length); i++) {
+                const biletId = i;
+                const firmaAdi = seciliArac.toUpperCase() + " Lines - " + Math.floor(Math.random() * 900 + 100);
+                const fiyat = (seciliSure * 140) + Math.floor(Math.random() * 80);
+
+                const kart = document.createElement('div');
+                kart.className = 'ticket-card';
+                kart.onclick = () => selectTicket(kart, biletId, karisikHavuz[i]);
+                kart.innerHTML = `
+                    <h4>${karisikHavuz[i]}</h4>
+                    <p style="font-size:14px; color:#666;">Firma: ${firmaAdi}</p>
+                    <p style="margin-top:10px; font-weight:bold; color: #2ecc71;">Süre: ${seciliSure} Saat</p>
+                    <p style="position:absolute; right:15px; bottom:15px; font-weight:bold; font-size:18px;">${fiyat} TL</p>
+                `;
+                container.appendChild(kart);
+            }
+        }
+
+        function selectTicket(element, id, rota) {
+            const kartlar = document.querySelectorAll('.ticket-card');
+            kartlar.forEach(k => k.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            seciliBilet = { id, rota };
+            document.getElementById('start-journey-btn').disabled = false;
+        }
+
+        // YOLCULUĞU BAŞLAT
+        function startJourney() {
+            yolculukAktif = true;
+            molaModu = false;
+            
+            const overlay = document.getElementById('simulation-overlay');
+            const video = document.getElementById('sim-video');
+            
+            kalanSaniye = seciliSure * 3600; 
+            updateTimerDisplay();
+
+            overlay.style.display = 'block';
+            
+            video.src = videoURLS[seciliArac];
+            video.load();
+
+            forceFullscreen(overlay);
+            
+            // GitHub sunucusundan video yüklenirken oluşabilecek gecikmeleri önlemek için güvenli oynatma
+            setTimeout(() => {
+                video.play().catch(err => {
+                    console.log("Oynatma tetikleniyor...");
+                    video.muted = true;
+                    video.play();
+                });
+            }, 300);
+
+            if(zamanlayici) clearInterval(zamanlayici);
+            zamanlayici = setInterval(countdown, 1000);
+        }
+
+        function countdown() {
+            if (!molaModu && yolculukAktif) {
+                kalanSaniye--;
+                updateTimerDisplay();
+
+                if (kalanSaniye <= 0) {
+                    endJourney();
+                }
+            }
+        }
+
+        function updateTimerDisplay() {
+            const saat = Math.floor(kalanSaniye / 3600);
+            const dakika = Math.floor((kalanSaniye % 3600) / 60);
+            const saniye = kalanSaniye % 60;
+
+            const fSaat = saat < 10 ? '0' + saat : saat;
+            const fDakika = dakika < 10 ? '0' + dakika : dakika;
+            const fSaniye = saniye < 10 ? '0' + saniye : saniye;
+
+            document.getElementById('sim-timer').innerText = `Kalan Süre: ${fSaat}:${fDakika}:${fSaniye}`;
+        }
+
+        function handleControlClick() {
+            const video = document.getElementById('sim-video');
+            const btn = document.getElementById('control-action-btn');
+            const breakAlert = document.getElementById('break-alert');
+            const overlay = document.getElementById('simulation-overlay');
+
+            if (!molaModu) {
+                molaModu = true;
+                video.pause();
+                breakAlert.style.display = 'block';
+                btn.innerText = "Yolculuğa Devam Et";
+                btn.style.background = "#2ecc71";
+            } else {
+                molaModu = false;
+                breakAlert.style.display = 'none';
+                btn.innerText = "Mola Ver";
+                btn.style.background = "var(--accent-color)";
+                
+                forceFullscreen(overlay);
+                setTimeout(() => { video.play(); }, 100);
+            }
+        }
+
+        function endJourney() {
+            yolculukAktif = false;
+            clearInterval(zamanlayici);
+            const overlay = document.getElementById('simulation-overlay');
+            const video = document.getElementById('sim-video');
+            
+            video.pause();
+            overlay.style.display = 'none';
+            document.getElementById('break-alert').style.display = 'none';
+            
+            if (document.exitFullscreen) document.exitFullscreen();
+
+            alert("Yolculuğunuz başarıyla tamamlandı!");
+            location.reload(); 
+        }
+
+        function forceFullscreen(element) {
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            }
+        }
+
+        function setupFullscreenInterceptors() {
+            const checkExit = () => {
+                if (yolculukAktif && !document.fullscreenElement && !document.webkitFullscreenElement) {
+                    if (!molaModu) {
+                        handleControlClick(); 
+                    }
+                }
+            };
+
+            document.addEventListener('fullscreenchange', checkExit);
+            document.addEventListener('webkitfullscreenchange', checkExit);
+
+            document.addEventListener('keydown', (e) => {
+                if (yolculukAktif && (e.key === "Escape" || e.keyCode === 27)) {
+                    if (!molaModu) {
+                        setTimeout(checkExit, 100);
+                    }
+                }
+            }, true);
+        }
+
+        window.addEventListener('beforeunload', function (e) {
+            if(yolculukAktif) {
+                e.preventDefault();
+                e.returnValue = 'Yolculuğunuz yarıda kesilecek!';
+            }
+        });
+    </script>
+</body>
+</html>
