@@ -173,27 +173,41 @@ body {
     background: black;
 }
 
+/* Sağ Alttaki Buton Grubu */
 .sim-controls {
     position: absolute;
     bottom: 40px;
     right: 40px;
     z-index: 10000000;
+    display: flex;
+    gap: 15px; /* İki buton arası boşluk */
 }
 
-.break-btn {
-    background: var(--accent-color);
-    color: white;
+.break-btn, .end-direct-btn {
     border: none;
-    padding: 18px 40px;
-    font-size: 20px;
+    padding: 18px 35px;
+    font-size: 18px;
     border-radius: 35px;
     cursor: pointer;
     font-weight: bold;
     box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-    transition: transform 0.2s;
+    transition: transform 0.2s, background 0.3s;
+    color: white;
 }
 
-.break-btn:active {
+.break-btn {
+    background: var(--accent-color);
+}
+
+.end-direct-btn {
+    background: #c0392b; /* Koyu Kırmızı */
+}
+
+.end-direct-btn:hover {
+    background: #e74c3c;
+}
+
+.break-btn:active, .end-direct-btn:active {
     transform: scale(0.95);
 }
 
@@ -211,23 +225,34 @@ body {
     letter-spacing: 1px;
 }
 
-/* Ortada Çıkacak Mola Uyarısı */
-.break-alert-overlay {
+/* Ortada Çıkacak Mola ve Tamamlandı Uyarıları */
+.break-alert-overlay, .end-alert-overlay {
     display: none;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.85);
     color: white;
-    padding: 30px 60px;
+    padding: 35px 70px;
     border-radius: 15px;
-    font-size: 32px;
+    font-size: 36px;
     font-weight: bold;
     text-align: center;
     letter-spacing: 1px;
-    border: 2px solid var(--accent-color);
-    box-shadow: 0 0 30px rgba(255, 107, 107, 0.4);
     z-index: 10000001;
     pointer-events: none;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+.break-alert-overlay {
+    background: rgba(0, 0, 0, 0.85);
+    border: 2px solid var(--accent-color);
+    box-shadow: 0 0 30px rgba(255, 107, 107, 0.4);
+}
+
+.end-alert-overlay {
+    background: rgba(20, 40, 20, 0.92);
+    border: 3px solid #2ecc71;
+    box-shadow: 0 0 40px rgba(46, 204, 113, 0.6);
+    color: #2ecc71;
 }
