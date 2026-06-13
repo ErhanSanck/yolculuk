@@ -1,9 +1,7 @@
-// --- BUBBLE / BULUT SUNUCU LİNKLERİ ---
-// Vercel Blob linklerini aldığında buradaki tırnak içindeki alanlara yapıştırabilirsin.
 const videoURLS = {
-    ucak: "https://yzf5f5l1r2ucb6g4.public.blob.vercel-storage.com/plane.mp4",
+    ucak: "https://archive.org/download/ship_20260613/plane.mp4",
     otobus: "https://archive.org/download/ship_20260613/bus.mp4",
-    gemi: "https://yzf5f5l1r2ucb6g4.public.blob.vercel-storage.com/gemi.mp4"
+    gemi: "https://archive.org/download/ship_20260613/ship.mp4"
 };
 
 const rotalar = {
@@ -157,6 +155,31 @@ function handleControlClick() {
     }
 }
 
+// KULLANICININ BUTONA BASARAK YOLCULUĞU ANINDA BİTİRMESİ
+function triggerDirectEnd() {
+    yolculukAktif = false;
+    clearInterval(zamanlayici);
+    
+    const video = document.getElementById('sim-video');
+    const breakAlert = document.getElementById('break-alert');
+    const endAlert = document.getElementById('end-alert');
+    
+    video.pause();
+    breakAlert.style.display = 'none'; // Eğer moladaysa mola yazısını gizle
+    endAlert.style.display = 'block';  // Ekranın tam ortasında "YOLCULUK TAMAMLANDI" yak
+    
+    // Kullanıcının ortadaki şık mesajı tam ekranda 3 saniye görebilmesi için gecikme ekliyoruz
+    setTimeout(() => {
+        endAlert.style.display = 'none';
+        const overlay = document.getElementById('simulation-overlay');
+        overlay.style.display = 'none';
+        
+        if (document.exitFullscreen) document.exitFullscreen();
+        location.reload(); // Formu sıfırla
+    }, 3000);
+}
+
+// SÜRE KENDİLİĞİNDEN BİTTİĞİNDE ÇALIŞACAK FONKSİYON
 function endJourney() {
     yolculukAktif = false;
     clearInterval(zamanlayici);
