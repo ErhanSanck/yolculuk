@@ -242,156 +242,256 @@ body {
 }
 
 /* ======================================================= */
-/* 📱 MOBİL CİHAZLAR (DİKEY MOD) - GÜNCELLENDİ             */
+/* 📱 MOBİL CİHAZLAR (DİKEY MOD - PORTRAIT)                */
 /* ======================================================= */
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) and (orientation: portrait) {
     body {
-        padding: 10px;
-        align-items: flex-start; /* Üstten başlasın taşma yapmasın */
+        padding: 8px;
+        align-items: flex-start;
     }
     
     .container {
-        flex-direction: column !important; /* Menü üste, form alta zorla */
+        flex-direction: column;
         min-height: auto;
+        max-height: none;
+        border-radius: 10px;
     }
 
+    /* DİKEY MODDA: BUTONLAR ÜSTTE YATAY */
     .sidebar {
-        width: 100% !important; /* Masaüstü %25'ini ez */
-        flex-direction: row !important; /* Butonları yan yana diz */
-        padding: 12px;
+        width: 100%;
+        flex-direction: row;
+        padding: 10px;
         gap: 8px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        justify-content: space-between;
+        border-radius: 10px 10px 0 0;
     }
 
     .tab-btn {
-        flex: 1; /* Butonlar ekran genişliğini eşit paylaşır */
-        padding: 12px 5px;
-        font-size: 14px;
+        flex: 1;
+        padding: 10px 8px;
+        font-size: 13px;
         text-align: center;
-        border-radius: 6px;
+        border-radius: 5px;
+        white-space: nowrap;
     }
     
     .tab-btn:hover, .tab-btn.active {
-        transform: translateY(-2px); /* Dikey modda yukarı zıplasın */
+        transform: translateY(-1px);
+        background: white;
+        color: var(--primary-color);
     }
 
+    /* DİKEY MODDA: İÇERİK ALTA, EKRANA SİĞSİN */
     .main-content {
-        width: 100% !important; /* Masaüstü %75'ini ez */
-        padding: 15px;
-        gap: 15px;
+        width: 100%;
+        padding: 12px;
+        gap: 12px;
+        overflow-y: auto;
+        max-height: calc(100vh - 150px);
+        border-radius: 0 0 10px 10px;
     }
 
     .content-header h2 {
-        font-size: 18px;
+        font-size: 16px;
+        margin-bottom: 8px;
     }
 
     .range-container { 
-        padding: 12px; 
+        padding: 10px;
+        background: #f0f2f5;
+    }
+
+    .range-slider {
+        margin-top: 5px;
+    }
+
+    .tickets-section h3 {
+        font-size: 14px;
+        margin-bottom: 8px;
     }
 
     .tickets-grid {
-        grid-template-columns: 1fr 1fr; /* Sıkıca yan yana iki bilet */
-        gap: 10px;
-    }
-
-    .ticket-card {
-        padding: 10px;
-    }
-
-    .ticket-card h4 { font-size: 13px; }
-    .ticket-card p { font-size: 11px !important; }
-    
-    /* Sağ alttaki fiyat etiketini mobil kart içinde alta hizala */
-    .ticket-price { 
-        font-size: 13px !important; 
-        position: relative !important;
-        right: auto !important;
-        bottom: auto !important;
-        display: block;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
         margin-top: 8px;
     }
 
-    /* SİMÜLASYON BUTONLARI MOBİL KÜÇÜLTMESİ */
+    .ticket-card {
+        padding: 8px;
+        border-radius: 8px;
+    }
+
+    .ticket-card h4 { 
+        font-size: 12px;
+        margin-bottom: 3px;
+    }
+    
+    .ticket-card p { 
+        font-size: 10px;
+    }
+
+    .footer-actions {
+        padding-top: 8px;
+        border-top: 1px solid #eee;
+    }
+
+    .start-btn {
+        padding: 10px 24px;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    /* SİMÜLASYON BUTONLARI - MOBİL DİKEY */
     .sim-controls {
-        bottom: 20px;
-        right: 20px;
-        gap: 10px;
+        bottom: 15px;
+        right: 15px;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
     }
 
     .break-btn, .end-direct-btn {
-        padding: 10px 16px; /* Yarı boyuta düşürüldü */
-        font-size: 14px;    /* Yazı fontu optimize edildi */
+        padding: 9px 14px;
+        font-size: 12px;
     }
 
     .timer-display {
-        top: 20px;
-        left: 20px;
-        font-size: 15px;
-        padding: 6px 12px;
+        top: 15px;
+        left: 15px;
+        font-size: 14px;
+        padding: 5px 10px;
     }
 
     .break-alert-overlay, .end-alert-overlay {
-        font-size: 22px;
-        padding: 20px;
+        font-size: 18px;
+        padding: 15px 20px;
         width: 85%;
     }
 }
 
 /* ======================================================= */
-/* 📱 MOBİL CİHAZLAR (YATAY ÇEVRİLİNCE) - GÜNCELLENDİ      */
+/* 📱 MOBİL CİHAZLAR (YATAY MOD - LANDSCAPE)               */
 /* ======================================================= */
-@media screen and (max-width: 900px) and (orientation: landscape) {
-    body { padding: 5px; }
-
-    .container {
-        flex-direction: row !important; /* Menü solda, form sağda kalır */
-        height: 95vh;
-        min-height: auto;
+@media (max-width: 1024px) and (orientation: landscape) {
+    body { 
+        padding: 8px;
+        align-items: center;
     }
 
+    .container {
+        flex-direction: row;
+        height: auto;
+        max-height: 95vh;
+        min-height: auto;
+        border-radius: 10px;
+    }
+
+    /* YATAY MODDA: BUTONLAR SOLDA DİKEY */
     .sidebar {
-        width: 25% !important; 
-        flex-direction: column !important; /* Butonları dikey yap */
+        width: 22%;
+        flex-direction: column;
         padding: 10px;
-        gap: 8px;
+        gap: 6px;
         justify-content: flex-start;
+        border-radius: 10px 0 0 10px;
     }
 
     .tab-btn {
         width: 100%;
-        padding: 10px;
-        font-size: 12px;
-        text-align: left;
+        padding: 8px 8px;
+        font-size: 11px;
+        text-align: center;
+        border-radius: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
+    .tab-btn:hover, .tab-btn.active {
+        transform: translateX(2px);
+    }
+
+    /* YATAY MODDA: İÇERİK SAĞDA */
     .main-content {
-        width: 75% !important;
-        padding: 15px;
+        width: 78%;
+        padding: 12px;
         gap: 10px;
-        overflow-y: auto; /* Küçük ekranlarda kaydırma çubuğu */
+        overflow-y: auto;
+        border-radius: 0 10px 10px 0;
     }
 
-    .content-header h2 { font-size: 16px; }
-    .range-container { padding: 8px 12px; }
+    .content-header h2 { 
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    .range-container { 
+        padding: 8px 10px;
+    }
+
+    .range-slider { 
+        margin-top: 4px;
+    }
+
+    .tickets-section h3 {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
     
     .tickets-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 8px;
+        gap: 6px;
+        margin-top: 4px;
     }
 
-    .ticket-card { padding: 8px; }
-    .ticket-card h4 { font-size: 12px; }
-    
-    .footer-actions { padding-top: 5px; }
-    .start-btn { padding: 8px 20px; font-size: 13px; }
+    .ticket-card { 
+        padding: 6px;
+        border-radius: 6px;
+    }
 
-    /* Butonlar Yatayda da Yarı Boyutta */
+    .ticket-card h4 { 
+        font-size: 11px;
+        margin-bottom: 2px;
+    }
+
+    .ticket-card p {
+        font-size: 9px;
+    }
+    
+    .footer-actions { 
+        padding-top: 6px;
+        border-top: 1px solid #eee;
+    }
+
+    .start-btn { 
+        padding: 7px 16px;
+        font-size: 12px;
+    }
+
+    /* SİMÜLASYON BUTONLARI - MOBİL YATAY */
     .sim-controls {
-        bottom: 15px;
-        right: 15px;
+        bottom: 12px;
+        right: 12px;
+        gap: 6px;
     }
 
     .break-btn, .end-direct-btn {
-        padding: 8px 15px;
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+    .timer-display {
+        top: 12px;
+        left: 12px;
         font-size: 13px;
+        padding: 4px 8px;
+    }
+
+    .break-alert-overlay, .end-alert-overlay {
+        font-size: 16px;
+        padding: 12px 15px;
+        width: 80%;
     }
 }
