@@ -285,17 +285,18 @@
     </div>
 
     <script>
+        // --- ARCHIVE.ORG / UZAK SUNUCU LİNKLERİ ---
+        // Buradaki örnek linkleri Archive.org'dan kopyaladığınız kendi .mp4 linklerinizle değiştirin.
+        const videoURLS = {
+            ucak: "https://archive.org/download/ship_20260613/plane.mp4",
+            otobus: "https://archive.org/download/ship_20260613/bus.mp4",
+            gemi: "https://archive.org/download/ship_20260613/ship.mp4"
+        };
+
         const rotalar = {
             kara: ["İstanbul - Ankara", "Ankara - İzmir", "Bursa - Antalya", "İstanbul - Sofya", "İzmir - Çanakkale", "Eskişehir - Bolu"],
             deniz: ["İstanbul - Atina", "İzmir - Selanik", "Marmaris - Rodos", "İstanbul - Odessa", "Venedik - Dubrovnik", "Mersin - Girne"],
             hava: ["Paris - Roma", "İstanbul - Londra", "Tokyo - Seul", "New York - Boston", "Berlin - Amsterdam", "Kahire - Dubai"]
-        };
-
-        // GitHub üzerinde sorunsuz çalışacak ana konuma göre göreli yollar
-        const videoURLS = {
-            ucak: "videos/plane.mp4",
-            otobus: "videos/bus.mp4",
-            gemi: "videos/ship.mp4"
         };
 
         let seciliArac = 'ucak';
@@ -381,15 +382,16 @@
 
             overlay.style.display = 'block';
             
+            // Doğrudan Archive.org linkini videoya bağlıyoruz
             video.src = videoURLS[seciliArac];
             video.load();
 
             forceFullscreen(overlay);
             
-            // GitHub sunucusundan video yüklenirken oluşabilecek gecikmeleri önlemek için güvenli oynatma
+            // Uzak sunucudan çekildiği için oynatmayı kontrollü tetikliyoruz
             setTimeout(() => {
                 video.play().catch(err => {
-                    console.log("Oynatma tetikleniyor...");
+                    console.log("Uzak sunucu akışı başlatılıyor...");
                     video.muted = true;
                     video.play();
                 });
